@@ -7,23 +7,13 @@
 
     <%- include('includes/navbar') %>
 
-    <h1>Cadastro filmes</h1>
+    <h1>Cadastro grupos</h1>
 
-    <form action="/filmes" method="POST">
+    <form action="/grupos" method="POST">
         <label for="nome">Nome</label>
         <input type="text" name="nome">
-        <br /><br />
-
-        <label for="genero">Genero</label>
-        <input type="text" name="genero">
-        <br /><br />
-
-        <label for="sinopse">Sinopse</label>
-        <input type="text" name="sinopse">
-        <br /><br />
-        
-        <label for="lancamento">Lançado em</label>
-        <input type="date" name="lancamento">
+        <label for="id">Id</label>
+        <input type="text" name="id">
         <br /><br />
 
         <input type="submit" value="CADASTRAR">
