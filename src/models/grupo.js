@@ -1,9 +1,9 @@
 const { dbcon } = require("../config/connection-db");
-
-// postgres://mguhwyxzuehniz:513393b8847a572e661667b54ca6560f9da2239d6d569004b671a0580229af8f@ec2-52-54-212-232.compute-1.amazonaws.com:5432/dfoselo3bnj81h
+const { nanoid } = require('nanoid');
 class Grupo {
-    constructor(id, nome) {
+    constructor(id, adm, nome) {
         this.id = id;
+        this.adm = adm;
         this.nome = nome;
     }
 }
@@ -36,8 +36,8 @@ class GrupoDAO {
 
     static async cadastrar(grupo) {
           
-        const sql = 'INSERT INTO public.grupos (id, nome) VALUES (2, $1);';
-        const values = [grupo.nome];
+        const sql = 'INSERT INTO public.grupos (id, adm, nome) VALUES ($1, $2, $3);';
+        const values = [nanoid(8), grupo.adm, grupo.nome];
         
         try {
             await dbcon.query(sql, values);

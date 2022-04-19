@@ -7,12 +7,10 @@
 
     <%- include('includes/navbar') %>    
 
-    <h1>grupo <%= grupo.nome %></h1>
-    <h2>Genero <%= grupo.genero %></h2>
+    <h1>Grupo <%= grupo.nome %></h1>
+    <h2>Adm: <%= grupo.adm %></h2>
     
-    <h3>Lançado em: <%= grupo.lancamento %></h3>
 
-    <p><%= grupo.sinopse %></p>
 
     <a href="/grupos/alterar/<%= grupo.id %>">ALTERAR</a>
     <br/><br/>

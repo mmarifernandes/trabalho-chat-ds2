@@ -66,10 +66,13 @@ class GruposController {
         //DEPOIS DE CADASTRAR, REDIRECIONA PARA A LISTAGEM
         console.log(`Cadastrando um grupo`);
         console.log({ body: req.body });
-        
+                console.log({ user: req.session.user.email });
+        const { user } = {user: req.session.user.email}
         const { nome } = req.body;
+        const { adm } =  user;
+        console.log(user);
         
-        const grupo = new Grupo('1', nome);
+        const grupo = new Grupo(null, user, nome);
         await GrupoDAO.cadastrar(grupo);
         
         return res.redirect('/grupos');

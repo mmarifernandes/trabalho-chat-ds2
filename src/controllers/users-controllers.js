@@ -14,6 +14,7 @@ class UsersController {
             email: userBody.email,
             senha      
         }
+            req.session.user = user;
 
         users.push(user);  // salvando no banco
 
