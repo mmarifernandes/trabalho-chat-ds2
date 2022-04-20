@@ -35,10 +35,9 @@ class GruposController {
         //     html += `<a href="/grupos/${grupo.id}">${grupo.nome}</a><br></br>`
         // })
         const result = await dbcon.query('SELECT * FROM grupos');
-        console.log({ result });
 
         // return res.send(html);
-        return res.render('listagem', { user: req.session.user, grupos: result.rows });
+        return res.render('listagem', { user: req.session.user, grupos: result.rows});
     }
 
     async deletar(req, res) {
@@ -58,7 +57,15 @@ class GruposController {
     async detalhar(req, res) {
         const { id } = req.params;
         const grupo = await GrupoDAO.buscaPeloId(id);
-        return res.render('detalhar', { grupo: grupo });
+        const result2 = await dbcon.query("SELECT * from grupouser join usuario on grupouser.userid = usuario.id  where grupoid = '"+id+"'");
+        const result3 = await dbcon.query("SELECT * from mensagem join usuario on usuario.id = mensagem.iduser where grupoid = '" + id + "'");
+
+        
+        console.log({
+            RESULT2: result2.rows
+        });
+
+        return res.render('detalhar', { grupo: grupo, membros: result2.rows, mensagens: result3.rows });
 
     }
 
@@ -72,7 +79,7 @@ class GruposController {
         const { adm } =  user;
         console.log(user);
         
-        const grupo = new Grupo(null, user, nome);
+        const grupo = new Grupo(null, user, nome, 1);
         await GrupoDAO.cadastrar(grupo);
         
         return res.redirect('/grupos');

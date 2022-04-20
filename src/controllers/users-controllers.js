@@ -2,6 +2,10 @@ const bcrypt = require('bcrypt');
 
 const users = [];
 
+const { nanoid } = require('nanoid');
+const { dbcon } = require('../config/connection-db');
+const { Usuario, UsuarioDAO } = require('../models/usuario');
+
 class UsersController {
     async cadastrar(req, res) {
         console.log('UsersController/cadastrar');
@@ -15,12 +19,14 @@ class UsersController {
             senha      
         }
             req.session.user = user;
-
+        const usuario = new Usuario(null, user.nome, user.email, senha);
+        await UsuarioDAO.cadastrar(usuario);
         users.push(user);  // salvando no banco
 
         console.log({ users });
         res.redirect('/');
     }
+
 
     async login(req, res) {
         // ACHAR COM O EMAIL CERTO

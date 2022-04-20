@@ -3,17 +3,47 @@
 
 <%- include('includes/head') %>
 
-<body>
+        <body>
 
-    <%- include('includes/navbar') %>    
+                <%- include('includes/navbar') %>
+<center>
+                        <h1>Grupo <%= grupo.nome %>
+                        </h1>
+                        <h2>Adm: <%= grupo.adm %>
+                        </h2>
+                        <br>
+                        <form action="#">
+                                <label for="email">Adicionar ao grupo</label>
+                                <input name="email" type="email" placeholder="Email do usuário">
+                                <select name="tipo" id="tipo">
+                                        <option value="leitor">Leitor</option>
+                                        <option value="escritor">Escritor</option>
+                                </select>
+                                <button type="submit">Adicionar</button>
+                        </form>
+                        <br>
+                        <h2>Membros:</h2>
+                        <% membros.forEach(membro=> { %>
 
-    <h1>Grupo <%= grupo.nome %></h1>
-    <h2>Adm: <%= grupo.adm %></h2>
-    
+                                <p>
+                                        <%= membro.nome %>
+                                </p>
+                                <% }) %>
+                                  <h2>Mensagens:</h2>
+                                  <br>
+                                  <br>
+                        <% mensagens.forEach(texto=> { %>
+                                   
+                                <p style="font-weight: bold;"><%= texto.nome %></p>
+                                <p>
+                                        <%= texto.texto %>
+                                </p>
+                                <% }) %>
 
+</center>
+                                        <!-- <a href="/grupos/alterar/<%= grupo.id %>">ALTERAR</a>
+                                        <br /><br />
+                                        <a href="/grupos/deletar/<%= grupo.id %>">DELETAR</a> -->
+        </body>
 
-    <a href="/grupos/alterar/<%= grupo.id %>">ALTERAR</a>
-    <br/><br/>
-    <a href="/grupos/deletar/<%= grupo.id %>">DELETAR</a>
-</body>
 </html>

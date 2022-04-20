@@ -17,20 +17,25 @@
         <tr>
           <th>ID</th>
           <th>Nome</th>
-          <th></th>
+          <th>quantidade</th>
         </tr>
         <tr>
           <td>AAA</td>
           <td>TESTE AAA</td>
+          <td>13</td>
           <td>Ver detalhes</td>
         </tr>
         <% grupos.forEach(grupo => { %>
           <tr>
             <td><%= grupo.id %></td>
             <td><%= grupo.nome %></td>
+              <td><%= grupo.quantidade %></td>
+
+            
             <td> <a href="/grupos/<%= grupo.id %>"> Ver detalhes </a> </td>
-          </tr>
-        <% }) %>
+            <% }) %>
+                  
+                    </tr>
     </table>
 </body>
 

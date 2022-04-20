@@ -1,31 +1,31 @@
 const { dbcon } = require("../config/connection-db");
 const { nanoid } = require('nanoid');
-class Grupo {
-    constructor(id, adm, nome, quantidade) {
+class Usuario {
+    constructor(id, nome, email, senha) {
         this.id = id;
-        this.adm = adm;
         this.nome = nome;
-        this.quantidade = quantidade;
+        this.email = email;
+        this.senha = senha;
 
     }
 }
 
 // DAO = DATA ACCESS OBJECT
-class GrupoDAO {
+class UsuarioDAO {
 
     static async buscaPeloId(id) {
-        const sql = 'SELECT * FROM grupos where id = $1';
+        const sql = 'SELECT * FROM usuario where id = $1';
         const result = await dbcon.query(sql, [id]);
-        const grupo = result.rows[0];
+        const usuario = result.rows[0];
         // const filme = new Filme() -> mundo ideal <3
-        return grupo;
+        return usuario;
     }
 
-    static async atualiza(grupo) {
-        const sql = `UPDATE grupos
+    static async atualiza(usuario) {
+        const sql = `UPDATE usuarios
             SET nome = $2, 
             WHERE id = $1;`;
-        const values = [grupo.id, grupo.nome];
+        const values = [usuario.id, usuario.nome];
         
         try {
             await dbcon.query(sql, values);
@@ -36,10 +36,10 @@ class GrupoDAO {
         }
     }
 
-    static async cadastrar(grupo) {
+    static async cadastrar(usuario) {
           
-        const sql = 'INSERT INTO public.grupos (id, adm, nome, quantidade) VALUES ($1, $2, $3, $4);';
-        const values = [nanoid(8), grupo.adm, grupo.nome, 1];
+        const sql = 'INSERT INTO public.usuario (id, nome, email, senha) VALUES ($1, $2, $3, $4);';
+        const values = [nanoid(8), usuario.nome, usuario.email, usuario.senha];
         
         try {
             await dbcon.query(sql, values);
@@ -51,6 +51,6 @@ class GrupoDAO {
 }
 
 module.exports = {
-    Grupo,
-    GrupoDAO
+    Usuario,
+    UsuarioDAO
 };
