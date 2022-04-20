@@ -12,7 +12,7 @@
                         <h2>Adm: <%= grupo.adm %>
                         </h2>
                         <br>
-                        <form action="#">
+                        <form action="/grupos/<%=grupo.id%>/add" method="post">
                                 <label for="email">Adicionar ao grupo</label>
                                 <input name="email" type="email" placeholder="Email do usuário">
                                 <select name="tipo" id="tipo">

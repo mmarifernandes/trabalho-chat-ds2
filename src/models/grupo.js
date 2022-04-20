@@ -10,6 +10,15 @@ class Grupo {
     }
 }
 
+class GrupoUser {
+    constructor(userid, grupoid, tipo) {
+        this.grupoid = grupoid;
+        this.userid = userid;
+        this.tipo = tipo;
+
+    }
+}
+
 // DAO = DATA ACCESS OBJECT
 class GrupoDAO {
 
@@ -37,20 +46,48 @@ class GrupoDAO {
     }
 
     static async cadastrar(grupo) {
-          
+        
+        const sql2 = 'INSERT INTO public.grupouser (userid, grupoid, tipo) VALUES ($1, $2, $3);';
+        const values2 = [grupo.adm, grupo.id, 'adm'];
+
         const sql = 'INSERT INTO public.grupos (id, adm, nome, quantidade) VALUES ($1, $2, $3, $4);';
-        const values = [nanoid(8), grupo.adm, grupo.nome, 1];
+        const values = [grupo.id, grupo.adm, grupo.nome, 1];
         
         try {
             await dbcon.query(sql, values);
+            await dbcon.query(sql2, values2);
+
         } catch (error) {
             console.log('NAO FOI POSSIVEL INSERIR');
             console.log({ error });
         }
+
+        
+    }
+}
+
+class GrupoUserDAO {
+
+    static async cadastrarusuario(grupouser) {
+
+        const sql = 'INSERT INTO public.grupouser (grupoid, userid, tipo) VALUES ($1, $2, $3);';
+        const values = [grupouser.grupoid, grupouser.userid, grupouser.tipo];
+
+        try {
+            await dbcon.query(sql, values);
+        } catch (error) {
+            console.log('NAO FOI POSSIVEL INSERIR');
+            console.log({
+                error
+            });
+        }
+
     }
 }
 
 module.exports = {
     Grupo,
+    GrupoUser,
+    GrupoUserDAO,
     GrupoDAO
 };

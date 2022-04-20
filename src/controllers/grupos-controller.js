@@ -2,7 +2,7 @@ let grupos = [];
 
 const { nanoid } = require('nanoid');
 const { dbcon } = require('../config/connection-db');
-const { Grupo, GrupoDAO } = require('../models/grupo');
+const { Grupo, GrupoUser, GrupoUserDAO, GrupoDAO } = require('../models/grupo');
 
 class GruposController {
 
@@ -57,7 +57,7 @@ class GruposController {
     async detalhar(req, res) {
         const { id } = req.params;
         const grupo = await GrupoDAO.buscaPeloId(id);
-        const result2 = await dbcon.query("SELECT * from grupouser join usuario on grupouser.userid = usuario.id  where grupoid = '"+id+"'");
+        const result2 = await dbcon.query("SELECT * from grupouser join usuario on grupouser.userid = usuario.email  where grupoid = '"+id+"'");
         const result3 = await dbcon.query("SELECT * from mensagem join usuario on usuario.id = mensagem.iduser where grupoid = '" + id + "'");
 
         
@@ -69,6 +69,29 @@ class GruposController {
 
     }
 
+
+    async cadastrarusuario(req, res) {
+        const { id } =  req.params;
+        const { email } = req.body;
+        const { tipo } = req.body;
+        //DEPOIS DE CADASTRAR, REDIRECIONA PARA A LISTAGEM
+        console.log(`Cadastrando um usuario`);
+        console.log({ id: req.body });
+        
+        // const { userid } = {user: req.session.user.email}
+        
+        console.log(id)
+        console.log(email)
+        console.log(tipo)
+        const grupouser = new GrupoUser(email, id, tipo);
+
+        console.log(grupouser)
+        await GrupoUserDAO.cadastrarusuario(grupouser);
+        
+        return res.redirect('/grupos');
+    }
+
+
     async cadastrar(req, res) {
         //DEPOIS DE CADASTRAR, REDIRECIONA PARA A LISTAGEM
         console.log(`Cadastrando um grupo`);
@@ -76,10 +99,11 @@ class GruposController {
                 console.log({ user: req.session.user.email });
         const { user } = {user: req.session.user.email}
         const { nome } = req.body;
-        const { adm } =  user;
-        console.log(user);
+        const { id } =  {id: nanoid(8)};
+        console.log('AQQIUIIIIIIIIIIIIIIIIIIIIIIIIIIIII')
+        console.log(id);
         
-        const grupo = new Grupo(null, user, nome, 1);
+        const grupo = new Grupo(id, user, nome, 1);
         await GrupoDAO.cadastrar(grupo);
         
         return res.redirect('/grupos');

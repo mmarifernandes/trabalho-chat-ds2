@@ -16,6 +16,7 @@ const gruposController = new GruposController();
 
 routes.get('/cadastrar', gruposController.mostraCadastro);
 
+
 routes.get('/deletar/:id', gruposController.deletar);
 
 routes.get('/', gruposController.listar);
@@ -23,6 +24,9 @@ routes.get('/', gruposController.listar);
 routes.get('/:id', gruposController.detalhar);
 
 routes.post('/', gruposController.cadastrar);
+routes.post('/:id/add', gruposController.cadastrarusuario);
+
+
 
 routes.get('/alterar/:id', gruposController.mostraAlterar);
 routes.post('/alterar/:id', gruposController.alterar);
