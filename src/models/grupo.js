@@ -19,6 +19,17 @@ class GrupoUser {
     }
 }
 
+class Mensagem {
+    constructor(grupoid, iduser, texto, id, datahora) {
+        this.grupoid = grupoid;
+        this.iduser = iduser;
+        this.texto = texto;
+        this.id = id;
+        this.datahora = datahora;
+
+    }
+}
+
 // DAO = DATA ACCESS OBJECT
 class GrupoDAO {
 
@@ -72,6 +83,28 @@ class GrupoUserDAO {
 
         const sql = 'INSERT INTO public.grupouser (grupoid, userid, tipo) VALUES ($1, $2, $3);';
         const values = [grupouser.grupoid, grupouser.userid, grupouser.tipo];
+        const up = "UPDATE public.grupos set quantidade = quantidade+1 where id = '"+grupouser.grupoid+"'";
+
+        try {
+            await dbcon.query(sql, values);
+            await dbcon.query(up);
+
+        } catch (error) {
+            console.log('NAO FOI POSSIVEL INSERIR');
+            console.log({
+                error
+            });
+        }
+
+    }
+}
+
+class MensagemDAO {
+
+    static async cadastrarmensagem(mensagem) {
+
+        const sql = 'INSERT INTO public.mensagem (grupoid, iduser, texto, id, datahora) VALUES ($1, $2, $3, $4, $5);';
+        const values = [mensagem.grupoid, mensagem.iduser, mensagem.texto, mensagem.id, mensagem.datahora];
 
         try {
             await dbcon.query(sql, values);
@@ -85,9 +118,14 @@ class GrupoUserDAO {
     }
 }
 
+
+
+
 module.exports = {
     Grupo,
     GrupoUser,
     GrupoUserDAO,
-    GrupoDAO
+    GrupoDAO,
+    Mensagem,
+    MensagemDAO
 };

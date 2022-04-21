@@ -6,12 +6,23 @@
         <body>
 
                 <%- include('includes/navbar') %>
-<center>
+
+
+                <div class="menu">
+                        <div class="container1">
                         <h1>Grupo <%= grupo.nome %>
                         </h1>
                         <h2>Adm: <%= grupo.adm %>
                         </h2>
                         <br>
+                    
+
+
+                 
+
+
+                                                        <% if (user.email==grupo.adm) { %>
+
                         <form action="/grupos/<%=grupo.id%>/add" method="post">
                                 <label for="email">Adicionar ao grupo</label>
                                 <input name="email" type="email" placeholder="Email do usuário">
@@ -21,26 +32,63 @@
                                 </select>
                                 <button type="submit">Adicionar</button>
                         </form>
+                                                                                        <% } %>
+
                         <br>
                         <h2>Membros:</h2>
                         <% membros.forEach(membro=> { %>
 
                                 <p>
-                                        <%= membro.nome %>
+                                        <%= membro.nome %> [<%= membro.tipo %>]
                                 </p>
                                 <% }) %>
-                                  <h2>Mensagens:</h2>
-                                  <br>
-                                  <br>
+                        </div>
+                        </div>
+                        <div class="main">
+                                  <!-- <h2 style="margin-left: 10%;">Mensagens:</h2> -->
+                               <br><br>
                         <% mensagens.forEach(texto=> { %>
-                                   
-                                <p style="font-weight: bold;"><%= texto.nome %></p>
-                                <p>
-                                        <%= texto.texto %>
-                                </p>
+                                <% if (user.nome == texto.nome) { %>
+                                <div class="quadrado" style="background-color: #45c294; margin-left: 20%; float: right; margin-right: 20%;   border-top-left-radius: 17; border-top-right-radius: 17; border-bottom-left-radius: 17; border-bottom-right-radius: 0;">
+
+                                        <p style="font-weight: bold; padding-top: 10px; padding-left: 10px; margin: 0 auto"><%= texto.nome %></p>
+                                        
+                                        <p style="padding-bottom: 25px;">
+                                                <%= texto.texto %> 
+                                        </p>
+                                        <p style="font-size: 10px; position:absolute; padding-right: 10px; padding-bottom: 10px; bottom:0; right:0;"><%= texto.horario %></p>
+                                </div>
+                                <% } else { %>
+                                         <div class="quadrado" style="background-color: #a1ecd1; border-top-left-radius: 17; border-top-right-radius: 17; border-bottom-left-radius: 0; border-bottom-right-radius: 17;">
+
+                                        <p style="font-weight: bold; padding-top: 10px; padding-left: 10px; margin: 0 auto"><%= texto.nome %></p>
+                                        
+                                        <p style="padding-bottom: 25px;">
+                                                <%= texto.texto %> 
+                                        </p>
+                                        <p style="font-size: 10px; position:absolute; padding-right: 10px; padding-bottom: 10px; bottom:0; right:0;"><%= texto.horario %></p>
+                                </div>
+                                                                <% }  %>
+
+                                <% }) %>
+                                <br>
+
+                                <% pessoa.forEach(p=> { %>
+
+                                <% if (p.tipo === 'escritor' || user.email == grupo.adm) { %>
+
+
+                        <form action="/grupos/<%=grupo.id%>/addmensagem" method="post">
+                        
+                                <input style="margin-left: 25%;" type="text" placeholder="Mensagem..." name="texto">
+                                <button type="submit">Enviar</button>
+                                </form>
+                                                                                                <% } %>
                                 <% }) %>
 
-</center>
+                                <br><br>
+</div>
+
                                         <!-- <a href="/grupos/alterar/<%= grupo.id %>">ALTERAR</a>
                                         <br /><br />
                                         <a href="/grupos/deletar/<%= grupo.id %>">DELETAR</a> -->

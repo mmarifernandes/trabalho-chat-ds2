@@ -24,7 +24,10 @@ routes.get('/', gruposController.listar);
 routes.get('/:id', gruposController.detalhar);
 
 routes.post('/', gruposController.cadastrar);
+
+
 routes.post('/:id/add', gruposController.cadastrarusuario);
+routes.post('/:id/addmensagem', gruposController.cadastrarmensagem);
 
 
 
