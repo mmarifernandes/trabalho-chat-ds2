@@ -1,12 +1,11 @@
 const { dbcon } = require("../config/connection-db");
-const { nanoid } = require('nanoid');
+const { nanoid } = require("nanoid");
 class Grupo {
     constructor(id, adm, nome, quantidade) {
         this.id = id;
         this.adm = adm;
         this.nome = nome;
         this.quantidade = quantidade;
-
     }
 }
 
@@ -15,7 +14,6 @@ class GrupoUser {
         this.grupoid = grupoid;
         this.userid = userid;
         this.tipo = tipo;
-
     }
 }
 
@@ -26,19 +24,44 @@ class Mensagem {
         this.texto = texto;
         this.id = id;
         this.datahora = datahora;
-
     }
 }
 
 // DAO = DATA ACCESS OBJECT
 class GrupoDAO {
-
     static async buscaPeloId(id) {
-        const sql = 'SELECT * FROM grupos where id = $1';
+        const sql = "SELECT * FROM grupos where id = $1";
         const result = await dbcon.query(sql, [id]);
         const grupo = result.rows[0];
         // const filme = new Filme() -> mundo ideal <3
         return grupo;
+    }
+
+    static async buscaPeloIdGrupo(grupoid, id) {
+        const sql = "SELECT * FROM grupouser where userid = $1 and grupoid = $2";
+        const values = [id, grupoid];
+
+        const result = await dbcon.query(sql, values);
+        const grupo = result.rows;
+        // const filme = new Filme() -> mundo ideal <3
+        return grupo;
+    }
+
+    static async SairGrupo(grupoid, id) {
+        const sql = "DELETE FROM grupouser where userid = $1 and grupoid = $2";
+        const menos ="UPDATE public.grupos set quantidade = quantidade-1 where id = '"+grupoid+"'";
+        const values = [id, grupoid];
+        try {
+            await dbcon.query(sql, values);
+            await dbcon.query(menos);
+
+            return true;
+        } catch (error) {
+            console.log({
+                error,
+            });
+            return false;
+        }
     }
 
     static async atualiza(grupo) {
@@ -46,80 +69,83 @@ class GrupoDAO {
             SET nome = $2, 
             WHERE id = $1;`;
         const values = [grupo.id, grupo.nome];
-        
+
         try {
             await dbcon.query(sql, values);
             return true;
         } catch (error) {
-            console.log({ error });
+            console.log({
+                error,
+            });
             return false;
         }
     }
 
     static async cadastrar(grupo) {
-        
-        const sql2 = 'INSERT INTO public.grupouser (userid, grupoid, tipo) VALUES ($1, $2, $3);';
-        const values2 = [grupo.adm, grupo.id, 'adm'];
+        const sql2 =
+            "INSERT INTO public.grupouser (userid, grupoid, tipo) VALUES ($1, $2, $3);";
+        const values2 = [grupo.adm, grupo.id, "adm"];
 
-        const sql = 'INSERT INTO public.grupos (id, adm, nome, quantidade) VALUES ($1, $2, $3, $4);';
+        const sql =
+            "INSERT INTO public.grupos (id, adm, nome, quantidade) VALUES ($1, $2, $3, $4);";
         const values = [grupo.id, grupo.adm, grupo.nome, 1];
-        
+
         try {
             await dbcon.query(sql, values);
             await dbcon.query(sql2, values2);
-
         } catch (error) {
-            console.log('NAO FOI POSSIVEL INSERIR');
-            console.log({ error });
+            console.log("NAO FOI POSSIVEL INSERIR");
+            console.log({
+                error,
+            });
         }
-
-        
     }
 }
 
 class GrupoUserDAO {
-
     static async cadastrarusuario(grupouser) {
-
-        const sql = 'INSERT INTO public.grupouser (grupoid, userid, tipo) VALUES ($1, $2, $3);';
+        const sql =
+            "INSERT INTO public.grupouser (grupoid, userid, tipo) VALUES ($1, $2, $3);";
         const values = [grupouser.grupoid, grupouser.userid, grupouser.tipo];
-        const up = "UPDATE public.grupos set quantidade = quantidade+1 where id = '"+grupouser.grupoid+"'";
+        const up =
+            "UPDATE public.grupos set quantidade = quantidade+1 where id = '" +
+            grupouser.grupoid +
+            "'";
 
         try {
             await dbcon.query(sql, values);
             await dbcon.query(up);
-
         } catch (error) {
-            console.log('NAO FOI POSSIVEL INSERIR');
+            console.log("NAO FOI POSSIVEL INSERIR");
             console.log({
-                error
+                error,
             });
         }
-
     }
 }
 
 class MensagemDAO {
-
     static async cadastrarmensagem(mensagem) {
-
-        const sql = 'INSERT INTO public.mensagem (grupoid, iduser, texto, id, datahora) VALUES ($1, $2, $3, $4, $5);';
-        const values = [mensagem.grupoid, mensagem.iduser, mensagem.texto, mensagem.id, mensagem.datahora];
+        const sql =
+            "INSERT INTO public.mensagem (grupoid, iduser, texto, id, datahora) VALUES ($1, $2, $3, $4, $5);";
+        const values = [
+            mensagem.grupoid,
+            mensagem.iduser,
+            mensagem.texto,
+            mensagem.id,
+            mensagem.datahora,
+        ];
 
         try {
             await dbcon.query(sql, values);
         } catch (error) {
-            console.log('NAO FOI POSSIVEL INSERIR');
+            console.log("NAO FOI POSSIVEL INSERIR");
             console.log({
-                error
+                error,
             });
         }
-
     }
 }
-
-
-
 
 module.exports = {
     Grupo,
@@ -127,5 +153,5 @@ module.exports = {
     GrupoUserDAO,
     GrupoDAO,
     Mensagem,
-    MensagemDAO
+    MensagemDAO,
 };

@@ -14,7 +14,7 @@ class Usuario {
 class UsuarioDAO {
 
     static async buscaPeloId(id) {
-        const sql = 'SELECT * FROM usuario where id = $1';
+        const sql = 'SELECT * FROM usuario where email = $1';
         const result = await dbcon.query(sql, [id]);
         const usuario = result.rows[0];
         // const filme = new Filme() -> mundo ideal <3

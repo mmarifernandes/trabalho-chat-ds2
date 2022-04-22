@@ -42,34 +42,39 @@ class GruposController {
 
     async deletar(req, res) {
         const { id } = req.params;
-        // BUSCAR O grupo E REMOVER DO VETOR
-        const grupoIdx = grupos.findIndex(f => f.id == id);
-        grupos.splice(grupoIdx, 1);
-
-        // FILTRAR O VETOR DE grupos BASEADO NO ID != DO ID DA REMOÇÃO
-        // grupos = grupos.filter(f => f.id != id);
-        
-        // BANCO - SQL COM DELETE WHERE
-
+        const { user } = {user: req.session.user.email}
+        await GrupoDAO.SairGrupo(id, user);
         return res.redirect('/grupos')
     }
 
     async detalhar(req, res) {
         const { id } = req.params;
-        const { user } = {user: req.session.user.email}
-
-        const grupo = await GrupoDAO.buscaPeloId(id);
+        if (req.session.user) {
+          
+            const { user } = {user: req.session.user.email}
+            const usuariogrupo = await GrupoDAO.buscaPeloIdGrupo(id, user);
+            console.log(usuariogrupo)
+            
+            if (usuariogrupo.length > 0) {
+        
+                const grupo = await GrupoDAO.buscaPeloId(id);
         const result2 = await dbcon.query("SELECT * from grupouser join usuario on grupouser.userid = usuario.email  where grupoid = '"+id+"'");
         const result3 = await dbcon.query("SELECT *, to_char(datahora, 'HH24:MI') as horario from mensagem join usuario on usuario.email = mensagem.iduser where grupoid = '" + id + "'order by datahora asc");
         const result4 = await dbcon.query("SELECT * from grupouser join usuario on usuario.email = grupouser.userid where userid = '"+user+"' and grupoid = '" + id + "'");
-
-      console.log(user)
+        
+       
         console.log({
             RESULT2: result4.rows
         });
-
+        
         return res.render('detalhar', { user: req.session.user, grupo: grupo, membros: result2.rows, mensagens: result3.rows, pessoa: result4.rows });
-
+    } else{
+    
+         res.send("Você precisa entrar no grupo")
+        }
+    }else{
+        res.send("Você precisa logar primeiro")
+    }
     }
 
 
@@ -91,7 +96,7 @@ class GruposController {
         console.log(grupouser)
         await GrupoUserDAO.cadastrarusuario(grupouser);
         
-        return res.redirect('/grupos');
+        return res.redirect('/grupos/' + id);
     }
 
 
@@ -103,7 +108,6 @@ class GruposController {
         const date  = new Date();
         const hour = date.getHours();
         const minute = date.getMinutes();
-        const formatdata = hour + ':' + minute;
 
         //DEPOIS DE CADASTRAR, REDIRECIONA PARA A LISTAGEM
         console.log(`Cadastrando mensagem`);

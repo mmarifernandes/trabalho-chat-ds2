@@ -31,15 +31,15 @@ class UsersController {
     async login(req, res) {
         // ACHAR COM O EMAIL CERTO
         const { email, senha } = req.body;
-        const usuarioEcontrado = users.find(u => u.email == email);
-
-        if (!usuarioEcontrado) return res.send('User nao encontrado');
+        const usuario = await UsuarioDAO.buscaPeloId(email);
+        if (!usuario) return res.send('User nao encontrado');
 
         // VERIFICAR A SENHA
-        const confere = bcrypt.compareSync(senha, usuarioEcontrado.senha);
+        const confere = bcrypt.compareSync(senha, usuario.senha);
         if (confere) {
-            req.session.user = usuarioEcontrado;
-            return res.send('Usuario e senha confirmados, vc fez o login');
+            req.session.user = usuario;
+                     return res.redirect('/');
+
         } else {
             return res.send('Senha nao confere...');
         }
