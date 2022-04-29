@@ -80,7 +80,7 @@
                                 <% if (p.tipo === 'escritor' || user.email == grupo.adm) { %>
                         <form action="/grupos/<%=grupo.id%>/addmensagem" method="post">
                         
-                                <input id="send" style="margin-left: 20%;" type="text" placeholder="Escreva algo..." name="texto">
+                                <input id="send" style="margin-left: 20%;" type="text" placeholder="Escreva algo..." name="texto" required>
                                 <button id="sendbutton" type="submit">Enviar</button>
                                 </form>
                                 <% }else{ %>
