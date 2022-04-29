@@ -13,6 +13,7 @@
     <h2>Todos os grupos</h2>
     <div style="overflow-x:auto; margin: 0 auto;">
     <table id="grupos" cellspacing="2px">
+      <% grupos.forEach(grupo => { %>
       <tr>
         <th>Nome</th>
         <th>Membros</th>
@@ -20,7 +21,6 @@
         <th></th>
         </tr>
        
-        <% grupos.forEach(grupo => { %>
           <tr onclick="window.location='/grupos/<%= grupo.id %>'">
           <td><%= grupo.nome %></td>
           <td><%= grupo.quantidade %></td>
