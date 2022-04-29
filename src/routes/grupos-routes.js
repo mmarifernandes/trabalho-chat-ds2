@@ -19,7 +19,17 @@ routes.get('/cadastrar', gruposController.mostraCadastro);
 
 routes.get('/deletar/:id', gruposController.deletar);
 
+routes.get('/deletarmembro/:id/:membroid', gruposController.deletarMembro);
+
+
 routes.get('/', gruposController.listar);
+
+routes.get('/meusgrupos', gruposController.listarmeusgrupos);
+
+routes.get('/meusgrupos/page/:num', gruposController.paginacaomgrupos);
+routes.get('/page/:num', gruposController.paginacao);
+routes.get('/:id/page/:num', gruposController.paginacaomensagem);
+
 
 routes.get('/:id', gruposController.detalhar);
 

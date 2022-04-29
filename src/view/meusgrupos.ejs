@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('includes/head') %>
+
+    <body>
+
+        <%- include('includes/navbar') %>
+            <center>
+                <h1>Marina Fernandes</h1>
+                <h2>Meus grupos</h2>
+                <% if (meusgrupos !==null) { %>
+
+                    <% if (meusgrupos.length !==0) { %>
+                        <div style="overflow-x:auto;">
+                            <table id="grupos" style="margin-bottom: 50px;">
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Membros</th>
+                                    <th>Adm</th>
+                                    <th></th>
+                                </tr>
+
+                                <% meusgrupos.forEach(mgrupo=> { %>
+                                    <tr onclick="window.location='/grupos/<%= mgrupo.id %>'">
+                                        <td>
+                                            <%= mgrupo.nome %>
+                                        </td>
+                                        <td>
+                                            <%= mgrupo.quantidade %>
+                                        </td>
+                                        <td>
+                                            <%= mgrupo.adm %>
+                                        </td>
+
+        <td><img src="/images/circle1.png" alt=""></td>
+                                    </tr>
+                                    <% }) %>
+                            </table>
+                        </div>
+                        <% } else {%>
+                            <h7 class="texto">Você não esta em nenhum grupo :(</h7>
+                            <% } %>
+                                <% } %>
+    <% for (page=0;page < (total.length/5); page++ ) { %>
+        <a href="/grupos/meusgrupos/page/<%= page*5 %>">
+            <%= page+1 %>
+        </a>
+        <% } %>
+            </center>
+    </body>
+
+</html>

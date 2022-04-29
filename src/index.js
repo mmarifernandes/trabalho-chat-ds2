@@ -24,6 +24,8 @@ app.use(session({
 
 app.use(express.static('public'));
 
+app.use('/images', express.static('images'));
+
 /* 
 SEMPRE QUE UTILIZAMOS APP.USE ESTAMOS INCLUINDO UM MIDDLEWARE !!!
 
@@ -40,6 +42,7 @@ app.use('*', (req, res, next) => {
 app.get('/', (req, res) => {
     res.redirect('/grupos');
 });
+
 
 const gruposRoutes = require('./routes/grupos-routes');
 app.use('/grupos', gruposRoutes);

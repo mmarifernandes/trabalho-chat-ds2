@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('includes/head') %>
+
+    <body>
+
+        <center>
+    <h1 style="margin-bottom: 20px;">Login</h1>
+
+    <form action="/users/login" method="post">
+        <label for="nome">Email</label>
+        <br>
+        <input type="email" name="email" required>
+        <br /><br />
+        <label for="nome">Senha</label>
+        <br>
+        <input type="password" name="senha" required>
+        <br /><br />
+
+        <input type="submit" value="Entrar ... " />
+        <h6>Não tem conta? <a href="/users/cadastrouser">Cadastre-se</a></h6>
+        <br />
+    </form>
+    </center>
+
+</html>

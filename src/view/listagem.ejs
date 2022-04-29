@@ -8,32 +8,34 @@
     <%- include('includes/navbar') %>    
     <center>
   <h1>Marina Fernandes</h1>
-    <% if (user) { %>
-      <h2>Bem vind@ <%= user.nome %></h2>
-    <% } %>
 
-    <h2>Lista de todos os grupos</h2>
-</center>
-    <table id="grupos">
-        <tr>
-          <th>Nome</th>
-          <th>Membros</th>
-          <th></th>
+
+    <h2>Todos os grupos</h2>
+    <div style="overflow-x:auto; margin: 0 auto;">
+    <table id="grupos" cellspacing="2px">
+      <tr>
+        <th>Nome</th>
+        <th>Membros</th>
+        <th>Adm</th>
+        <th></th>
         </tr>
        
         <% grupos.forEach(grupo => { %>
-          <tr>
-            <td><%= grupo.nome %></td>
-              <td><%= grupo.quantidade %></td>
-
-            
-            <td> <a href="/grupos/<%= grupo.id %>"> Ver </a> </td>
-            <!-- <td> <a href="/grupos/<%= grupo.id %>/entrar"> Entrar </a> </td> -->
-
-            <% }) %>
-                  
-                    </tr>
-    </table>
+          <tr onclick="window.location='/grupos/<%= grupo.id %>'">
+          <td><%= grupo.nome %></td>
+          <td><%= grupo.quantidade %></td>
+          <td><%= grupo.adm %></td>   
+          <td><img src="/images/circle1.png" alt=""></td>
+              
+            </tr>
+              <% }) %>
+              
+          </table>
+          </div>
+          <% for (page = 0;page < (total.length/5); page++ ) { %>
+      <a href="/grupos/page/<%= page*5 %>"><%= page+1 %></a>
+      <% } %>
+  </center>
 </body>
 
 </html>

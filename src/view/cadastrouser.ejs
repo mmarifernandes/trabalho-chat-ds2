@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('includes/head') %>
+
+    <body>
+<center>
+    <h1 style="margin-bottom: 20px;">Cadastro</h1>
+
+    <form action="/users/cadastrar" method="post">
+        <label for="nome">Nome</label>
+        <br>
+        <input type="text" name="nome" required>
+        <br /><br />
+        <label for="nome">Email</label>
+        <br>
+        <input type="email" name="email" required>
+        <br /><br />
+        <label for="nome">Senha</label>
+        <br>
+        <input type="password" name="senha" required>
+        <br /><br />
+
+        <input type="submit" value="CADASTRAR" />
+        <h6>Já tem conta? <a href="/users/login">Entre</a></h6>
+
+    </form>
+</center>
+
+</body>
+
+</html>

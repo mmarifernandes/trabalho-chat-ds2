@@ -7,6 +7,12 @@ const { dbcon } = require('../config/connection-db');
 const { Usuario, UsuarioDAO } = require('../models/usuario');
 
 class UsersController {
+
+        async mostraCadastro(req, res) {
+            return res.render('cadastrouser');
+        }
+
+
     async cadastrar(req, res) {
         console.log('UsersController/cadastrar');
 
@@ -27,6 +33,9 @@ class UsersController {
         res.redirect('/');
     }
 
+       async mostraLogin(req, res) {
+           return res.render('login');
+       }
 
     async login(req, res) {
         // ACHAR COM O EMAIL CERTO
