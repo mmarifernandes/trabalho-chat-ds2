@@ -1,41 +1,37 @@
 const bcrypt = require('bcrypt');
 
-const users = [];
-
 const { nanoid } = require('nanoid');
 const { dbcon } = require('../config/connection-db');
 const { Usuario, UsuarioDAO } = require('../models/usuario');
 
 class UsersController {
 
-        async mostraCadastro(req, res) {
-            return res.render('cadastrouser');
-        }
+    async mostraCadastro(req, res) {
+        return res.render('cadastrouser');
+    }
 
 
     async cadastrar(req, res) {
         console.log('UsersController/cadastrar');
 
         const userBody = req.body;
-        const senha = bcrypt.hashSync(userBody.senha, 10); 
-        
+        const senha = bcrypt.hashSync(userBody.senha, 10);
+
         const user = {
             nome: userBody.nome,
             email: userBody.email,
-            senha      
+            senha
         }
-            req.session.user = user;
+        req.session.user = user;
         const usuario = new Usuario(null, user.nome, user.email, senha);
         await UsuarioDAO.cadastrar(usuario);
-        users.push(user);  // salvando no banco
 
-        console.log({ users });
         res.redirect('/');
     }
 
-       async mostraLogin(req, res) {
-           return res.render('login');
-       }
+    async mostraLogin(req, res) {
+        return res.render('login');
+    }
 
     async login(req, res) {
         // ACHAR COM O EMAIL CERTO
@@ -47,12 +43,12 @@ class UsersController {
         const confere = bcrypt.compareSync(senha, usuario.senha);
         if (confere) {
             req.session.user = usuario;
-                     return res.redirect('/');
+            return res.redirect('/');
 
         } else {
             return res.send('Senha nao confere...');
         }
-        
+
     }
 }
 
