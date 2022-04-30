@@ -1,7 +1,7 @@
 const { Client } = require('pg')
 
 const dbcon = new Client({
-    connectionString: 'postgres://ssnjgyrkbrhfkk:a4ed50734ac7ca49a6e49a8e1a3e1f774f242012fc7087d9350849ded046bfbb@ec2-52-71-69-66.compute-1.amazonaws.com:5432/denglilpjn65l1',
+    connectionString: 'postgres://tfhgfwikjocfhz:9de45ed07fe92e5dc941fc4141d4ceec24632adcf8fdd5222d32bd8bf155ae35@ec2-44-196-223-128.compute-1.amazonaws.com:5432/d2mutb76m5dphs',
     ssl: {
         rejectUnauthorized: false
     }
